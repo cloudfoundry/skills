@@ -1,0 +1,36 @@
+{
+  "//": "Recommended Claude Code permissions. Merge these entries into the project .claude/settings.json. Replace /Users/YOU and the script paths with the installed skill location.",
+  "sandbox": {
+    "excludedCommands": [
+      "/Users/YOU/.claude/skills/cf-kind-verify/scripts/*.sh",
+      "/Users/YOU/.claude/skills/cf-kind-verify/scripts/*.sh *",
+      "docker",
+      "docker *",
+      "kind",
+      "kind *",
+      "kubectl",
+      "kubectl *"
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(bash /Users/YOU/.claude/skills/cf-kind-verify/scripts/prereqs.sh)",
+      "Bash(bash /Users/YOU/.claude/skills/cf-kind-verify/scripts/discover-target.sh *)",
+      "Bash(bash /Users/YOU/.claude/skills/cf-kind-verify/scripts/redeploy.sh *)",
+      "Bash(bash /Users/YOU/.claude/skills/cf-kind-verify/scripts/verify-status.sh *)",
+      "Bash(bash /Users/YOU/.claude/skills/cf-kind-verify/scripts/lifecycle.sh *)",
+      "Bash(bash /Users/YOU/.claude/skills/cf-kind-verify/scripts/render-check.sh *)",
+      "Bash(docker buildx bake --print)",
+      "Bash(docker info)",
+      "Bash(kind load *)",
+      "Bash(kind get *)",
+      "Bash(kubectl get pods *)",
+      "Bash(kubectl get deployment *)",
+      "Bash(kubectl get deployments *)",
+      "Bash(kubectl get nodes *)",
+      "Bash(kubectl get replicasets *)",
+      "Bash(kubectl config current-context)",
+      "Bash(kubectl config use-context *)"
+    ]
+  }
+}

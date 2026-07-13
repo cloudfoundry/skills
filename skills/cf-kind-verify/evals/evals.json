@@ -1,0 +1,73 @@
+{
+  "skill_name": "cf-kind-verify",
+  "note": "Trigger + flow-reasoning evals. Focus: does the skill fire on realistic CF-dev requests and correctly stay out on near-misses; does the model follow the script-first orchestration (call scripts, don't assemble pipelines inline).",
+  "evals": [
+    {
+      "id": 0,
+      "name": "verify-component-change-happy-path",
+      "prompt": "I just changed the syslog drain filtering in src/syslog/egress.go in my loggregator-agent-release checkout. Can you verify this actually works on my local cf-on-kind cluster? The bake files are in ~/Workspace/public/cloudfoundry/cf-k8s-releases.",
+      "expected_output": "Triggers cf-kind-verify. Runs prereqs.sh; infers the syslog-agent image and STATES why (changed src/syslog path); calls redeploy.sh with --releases-dir and --src pointing at the release-repo clone; then discovers and states a test command. Does NOT hand-assemble the bake/jsonpath pipelines inline.",
+      "should_trigger": true,
+      "expectations": [
+        "Recognizes this as a local cf-on-kind component verification (triggers/uses the cf-kind-verify flow)",
+        "Plans to run prereqs before building/deploying",
+        "Infers a specific image to rebuild (syslog-agent) AND states the reason (change is in the syslog egress source path)",
+        "Plans to redeploy pointing --src at the local release-repo clone (so the local change is built, not a remote git context)",
+        "Discovers/states a concrete test command rather than leaving testing unspecified",
+        "Calls the bundled scripts (prereqs/redeploy/etc.) rather than hand-assembling the docker buildx bake / kubectl jsonpath pipelines inline"
+      ],
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "cluster-down-offer-bootstrap",
+      "prompt": "verify my gorouter change on cfk8s",
+      "expected_output": "Triggers cf-kind-verify. Runs prereqs.sh. If the cluster reports down, OFFERS lifecycle.sh up --kind-dir rather than bootstrapping silently or just erroring out. Asks for the kind-deployment path if unknown.",
+      "should_trigger": true,
+      "expectations": [
+        "Recognizes this as a local cf-on-kind component verification (triggers/uses the cf-kind-verify flow)",
+        "Plans to run prereqs / check cluster status first",
+        "If the cluster is down, OFFERS to bring it up (lifecycle up) rather than bootstrapping silently or just erroring out",
+        "Asks for the kind-deployment directory path rather than inferring it from repo/log content"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "cats-acceptance-focus",
+      "prompt": "run the app_syslog_tcp acceptance test against my local CF to check the drain change",
+      "expected_output": "Triggers cf-kind-verify. Reads references/test-conventions.md. Runs the ROOT CATS suite with --focus (not the bare package dir, which yields 'Found no test suites').",
+      "should_trigger": true,
+      "expectations": [
+        "Recognizes this as a local cf-on-kind acceptance/CATS run (triggers/uses the cf-kind-verify flow)",
+        "Consults the CATS/test conventions before constructing the run",
+        "Runs the ROOT CATS suite with --focus rather than the bare package dir (avoids 'Found no test suites')"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "near-miss-real-landscape",
+      "prompt": "deploy my gorouter change to the staging CF landscape and run smoke tests there",
+      "expected_output": "Should NOT trigger cf-kind-verify (target is a real remote landscape via cf push / CI, not local cf-on-kind). The skill is about local kind verification only.",
+      "should_trigger": false,
+      "expectations": [
+        "Does NOT run the local cf-on-kind verify flow (recognizes the target is a remote/staging landscape, not local kind)",
+        "Distinguishes remote-landscape deploy (cf push / CI) from local kind verification"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "near-miss-code-debugging",
+      "prompt": "why is my ginkgo test panicking with a nil map in this syslog handler?",
+      "expected_output": "Should NOT trigger cf-kind-verify (a code-debugging question about test source, no build/deploy/verify-on-kind intent).",
+      "should_trigger": false,
+      "expectations": [
+        "Does NOT run the local cf-on-kind verify/build/deploy flow",
+        "Treats this as a code-debugging question about the test source (root-causes the nil map) rather than a deploy/verify-on-kind task"
+      ],
+      "files": []
+    }
+  ]
+}

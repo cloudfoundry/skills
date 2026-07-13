@@ -1,0 +1,19 @@
+{
+  "name": "cf-kind-verify",
+  "displayName": "cf-kind-verify",
+  "description": "Verify Cloud Foundry component changes on a local cf-on-kind cluster.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Cloud Foundry Community"
+  },
+  "repository": "https://github.com/cloudfoundry/skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "cloud-foundry",
+    "cf-on-kind",
+    "kind",
+    "kubernetes",
+    "verification",
+    "testing"
+  ]
+}

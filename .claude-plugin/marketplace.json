@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "cloudfoundry-skills",
+  "description": "Cloud Foundry skills for AI coding agents.",
+  "owner": {
+    "name": "Cloud Foundry Community",
+    "url": "https://www.cloudfoundry.org/"
+  },
+  "plugins": [
+    {
+      "name": "cf-kind-verify",
+      "source": "./skills/cf-kind-verify",
+      "description": "Verify Cloud Foundry component changes on a local cf-on-kind cluster."
+    }
+  ]
+}
