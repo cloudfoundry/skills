@@ -1,0 +1,10 @@
+[project]
+name = "cloudfoundry-skills"
+version = "0.0.0"
+requires-python = ">=3.11"
+
+[dependency-groups]
+dev = [
+  "ruff==0.16.7",
+  "ty==0.0.80",
+]
