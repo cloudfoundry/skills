@@ -46,12 +46,12 @@ json:
 ## ruff: lint Python helper scripts
 ruff:
 	@echo ">> ruff ($(words $(PY)) files)"
-	@if [ -n "$(strip $(PY))" ]; then uvx ruff@0.16.7 check $(PY); else echo "(no python files)"; fi
+	@if [ -n "$(strip $(PY))" ]; then uv run --group dev ruff check $(PY); else echo "(no python files)"; fi
 
 ## ty: type-check Python helper scripts
 ty:
 	@echo ">> ty ($(words $(PY)) files)"
-	@if [ -n "$(strip $(PY))" ]; then uvx ty@0.0.80 check $(PY); else echo "(no python files)"; fi
+	@if [ -n "$(strip $(PY))" ]; then uv run --group dev ty check $(PY); else echo "(no python files)"; fi
 
 ## help: list targets
 help:
