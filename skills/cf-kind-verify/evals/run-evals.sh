@@ -63,7 +63,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 log() { echo "==> $*"; }
-vlog() { [[ "$VERBOSE" == 1 ]] && echo "    $*" || true; }
+vlog() {
+  if [[ "$VERBOSE" == 1 ]]; then
+    echo "    $*"
+  fi
+}
 die() { echo "run-evals.sh: $*" >&2; exit 1; }
 
 command -v claude >/dev/null 2>&1 || die "claude CLI not found on PATH"
